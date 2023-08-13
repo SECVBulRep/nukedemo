@@ -8,12 +8,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuke.FunctionalTests", "Nuk
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuke.UnitTests", "Nuke.UnitTests\Nuke.UnitTests.csproj", "{8CB1E439-550E-44F1-9093-6D6412AAD5F5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{5EA8DCA3-BEAE-4D3E-AA05-867ADB2B7212}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5EA8DCA3-BEAE-4D3E-AA05-867ADB2B7212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EA8DCA3-BEAE-4D3E-AA05-867ADB2B7212}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D99EE93-5E4E-407E-B874-06781529A375}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0D99EE93-5E4E-407E-B874-06781529A375}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D2C178E-0476-418F-9CFC-E49D5CCC7D22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
