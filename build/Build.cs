@@ -6,6 +6,7 @@ using Nuke.Common.Execution;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
+using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.IO.FileSystemTasks;
@@ -18,22 +19,20 @@ class Build : NukeBuild
     ///   - JetBrains Rider            https://nuke.build/rider
     ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
     ///   - Microsoft VSCode           https://nuke.build/vscode
-
-    public static int Main () => Execute<Build>(x => x.Compile);
+    public static int Main() => Execute<Build>(x => x.Compile);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-    [Parameter("Hello param decription")]
-    readonly string Hello;
-    
+    [Parameter("Hello param decription")] readonly string Hello;
+
     Target Clean => _ => _
         .Before(Restore)
         .Executes(() =>
         {
         });
-    
-    
+
+
     Target Test => _ => _
         .Before(Restore)
         .Executes(() =>
@@ -45,14 +44,13 @@ class Build : NukeBuild
         .DependsOn(Test)
         .Executes(() =>
         {
-           
+             
         });
 
     Target Compile => _ => _
-        .DependsOn(Restore)
+        .DependsOn(Restore, Clean)
         .Executes(() =>
         {
             
         });
-
 }
