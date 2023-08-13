@@ -7,6 +7,7 @@ using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.MSBuild;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.IO.FileSystemTasks;
@@ -26,6 +27,9 @@ class Build : NukeBuild
 
     [Parameter("Hello param decription")] readonly string Hello;
 
+
+    [Solution] readonly Solution Solution;
+    
     Target Clean => _ => _
         .Before(Restore)
         .Executes(() =>
@@ -44,7 +48,8 @@ class Build : NukeBuild
         .DependsOn(Test)
         .Executes(() =>
         {
-             
+            DotNetTasks.DotNetRestore(_ => _
+                .SetProjectFile(Solution));
         });
 
     Target Compile => _ => _
