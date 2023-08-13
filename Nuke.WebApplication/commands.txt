@@ -6,3 +6,5 @@
 
 
 3) nuke --help
+
+4) nuke --plan
