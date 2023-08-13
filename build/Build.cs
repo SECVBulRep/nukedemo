@@ -38,17 +38,21 @@ class Build : NukeBuild
         .Before(Restore)
         .Executes(() =>
         {
+            Serilog.Log.Information(Configuration);
         });
 
     Target Restore => _ => _
+        .DependsOn(Test)
         .Executes(() =>
         {
+           
         });
 
     Target Compile => _ => _
         .DependsOn(Restore)
         .Executes(() =>
         {
+            
         });
 
 }
