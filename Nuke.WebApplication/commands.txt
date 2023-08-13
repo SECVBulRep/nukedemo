@@ -1,0 +1,7 @@
+﻿установка
+1) dotnet tool install Nuke.GlobalTool --global
+
+настройка
+2)nuke
+
+ы

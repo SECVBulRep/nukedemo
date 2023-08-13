@@ -1,0 +1,15 @@
+obj/
+bin/
+*.orig
+*.user
+.vs/
+*.log
+/packages/
+.files/
+!Libs/Report/*.dll
+!Libs/WM/*.dll
+*.pubxml
+*.kwm
+.cr/
+.idea/.idea.Payout/.idea/indexLayout.xml
+.idea/
