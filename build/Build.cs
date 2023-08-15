@@ -30,10 +30,15 @@ class Build : NukeBuild
 
     [Solution] readonly Solution Solution;
 
+
+    bool proceeded = false;
+
     Target Clean => _ => _
         .Before(Restore)
+        .DependentFor(Compile)
         .Executes(() =>
         {
+            proceeded = true;
         });
 
 
@@ -46,6 +51,9 @@ class Build : NukeBuild
 
     Target Restore => _ => _
         .DependsOn(Test)
+        .OnlyWhenDynamic(()=>proceeded)
+        .Requires(()=>Hello) // ключи напрмер для логина
+        .WhenSkipped(DependencyBehavior.Skip)
         .Executes(() =>
         {
             DotNetTasks.DotNetRestore(_ => _
@@ -53,7 +61,7 @@ class Build : NukeBuild
         });
 
     Target Compile => _ => _
-        .DependsOn(Restore, Clean)
+        .DependsOn(Restore)
         .Executes(() =>
         {
             DotNetTasks.DotNetBuild(s =>
