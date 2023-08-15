@@ -29,7 +29,7 @@ class Build : NukeBuild
 
 
     [Solution] readonly Solution Solution;
-    
+
     Target Clean => _ => _
         .Before(Restore)
         .Executes(() =>
@@ -56,6 +56,9 @@ class Build : NukeBuild
         .DependsOn(Restore, Clean)
         .Executes(() =>
         {
-            
+            DotNetTasks.DotNetBuild(s =>
+                s.SetProjectFile(Solution)
+                    .SetConfiguration(Configuration)
+                    .EnableNoRestore());
         });
 }
