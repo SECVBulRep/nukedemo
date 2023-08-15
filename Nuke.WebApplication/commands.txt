@@ -8,3 +8,9 @@
 3) nuke --help
 
 4) nuke --plan
+
+5) Можно вывзвать отдельно все пример 
+
+ nuke clean
+ nuke compile 
+ nuke compile --skip clean 
