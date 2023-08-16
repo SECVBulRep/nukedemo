@@ -25,11 +25,7 @@ class Build : NukeBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-    [Parameter("Hello param decription")] readonly string Hello;
-
-
     [Solution] readonly Solution Solution;
-
 
     bool proceeded = false;
 
@@ -51,9 +47,6 @@ class Build : NukeBuild
 
     Target Restore => _ => _
         .DependsOn(Test)
-        .OnlyWhenDynamic(()=>proceeded)
-        .Requires(()=>Hello) // ключи напрмер для логина
-        .WhenSkipped(DependencyBehavior.Skip)
         .Executes(() =>
         {
             DotNetTasks.DotNetRestore(_ => _
@@ -68,5 +61,15 @@ class Build : NukeBuild
                 s.SetProjectFile(Solution)
                     .SetConfiguration(Configuration)
                     .EnableNoRestore());
+        });
+
+    Target UnitTests => _ => _
+        .DependsOn(Compile)
+        .Executes(() =>
+        {
+            DotNetTasks.DotNetTest(s =>
+                s.SetProjectFile(RootDirectory / "Nuke.UnitTests")
+                    .EnableNoRestore()
+                    .EnableNoBuild());
         });
 }
