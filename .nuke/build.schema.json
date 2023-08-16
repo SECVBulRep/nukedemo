@@ -74,7 +74,11 @@
             "enum": [
               "Clean",
               "Compile",
+              "FunctionalTests",
               "Restore",
+              "RunTests",
+              "StartApi",
+              "StopApi",
               "Test",
               "UnitTests"
             ]
@@ -92,7 +96,11 @@
             "enum": [
               "Clean",
               "Compile",
+              "FunctionalTests",
               "Restore",
+              "RunTests",
+              "StartApi",
+              "StopApi",
               "Test",
               "UnitTests"
             ]

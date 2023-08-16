@@ -7,6 +7,7 @@ using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.Git;
 using Nuke.Common.Tools.MSBuild;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.EnvironmentInfo;
@@ -27,14 +28,12 @@ class Build : NukeBuild
 
     [Solution] readonly Solution Solution;
 
-    bool proceeded = false;
 
     Target Clean => _ => _
         .Before(Restore)
         .DependentFor(Compile)
         .Executes(() =>
         {
-            proceeded = true;
         });
 
 
@@ -71,5 +70,35 @@ class Build : NukeBuild
                 s.SetProjectFile(RootDirectory / "Nuke.UnitTests")
                     .EnableNoRestore()
                     .EnableNoBuild());
+        });
+
+    Target FunctionalTests => _ => _
+        .DependsOn(Compile, StartApi)
+        .Triggers(StopApi)
+        .Executes(() =>
+        {
+            DotNetTasks.DotNetTest(s =>
+                s.SetProjectFile(RootDirectory / "Nuke.FunctionalTests")
+                    .EnableNoRestore()
+                    .EnableNoBuild());
+        });
+
+    IProcess ApiProcess;
+    Target StartApi => _ => _
+        .Executes(() =>
+        {
+            ApiProcess = ProcessTasks.StartProcess("dotnet", "run", RootDirectory / "Nuke.WebApplication");
+        });
+
+    Target StopApi => _ => _
+        .Executes(() =>
+        {
+            ApiProcess.Kill();
+        });
+    
+    Target RunTests => _ => _
+        .DependsOn(UnitTests, FunctionalTests)
+        .Executes(() =>
+        {
         });
 }

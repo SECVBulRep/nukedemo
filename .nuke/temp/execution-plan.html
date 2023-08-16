@@ -208,6 +208,11 @@ $(document).ready(function() {
         $("#Test").removeClass('highlight');
         $("#Restore").removeClass('highlight');
         $("#Compile").removeClass('highlight');
+        $("#UnitTests").removeClass('highlight');
+        $("#FunctionalTests").removeClass('highlight');
+        $("#StartApi").removeClass('highlight');
+        $("#StopApi").removeClass('highlight');
+        $("#RunTests").removeClass('highlight');
         $("#Clean").addClass('highlight');
     },
     function() {
@@ -223,6 +228,11 @@ $(document).ready(function() {
         $("#Test").removeClass('highlight');
         $("#Restore").removeClass('highlight');
         $("#Compile").removeClass('highlight');
+        $("#UnitTests").removeClass('highlight');
+        $("#FunctionalTests").removeClass('highlight');
+        $("#StartApi").removeClass('highlight');
+        $("#StopApi").removeClass('highlight');
+        $("#RunTests").removeClass('highlight');
         $("#Test").addClass('highlight');
     },
     function() {
@@ -238,6 +248,11 @@ $(document).ready(function() {
         $("#Test").removeClass('highlight');
         $("#Restore").removeClass('highlight');
         $("#Compile").removeClass('highlight');
+        $("#UnitTests").removeClass('highlight');
+        $("#FunctionalTests").removeClass('highlight');
+        $("#StartApi").removeClass('highlight');
+        $("#StopApi").removeClass('highlight');
+        $("#RunTests").removeClass('highlight');
         $("#Test").addClass('highlight');
         $("#Restore").addClass('highlight');
     },
@@ -255,6 +270,11 @@ $(document).ready(function() {
         $("#Test").removeClass('highlight');
         $("#Restore").removeClass('highlight');
         $("#Compile").removeClass('highlight');
+        $("#UnitTests").removeClass('highlight');
+        $("#FunctionalTests").removeClass('highlight');
+        $("#StartApi").removeClass('highlight');
+        $("#StopApi").removeClass('highlight');
+        $("#RunTests").removeClass('highlight');
         $("#Test").addClass('highlight');
         $("#Clean").addClass('highlight');
         $("#Restore").addClass('highlight');
@@ -265,6 +285,142 @@ $(document).ready(function() {
         $("#Clean").removeClass('highlight');
         $("#Restore").removeClass('highlight');
         $("#Compile").removeClass('highlight');
+        $("#Test").addClass('highlight');
+        $("#Clean").addClass('highlight');
+        $("#Restore").addClass('highlight');
+        $("#Compile").addClass('highlight');
+    });
+  $("#UnitTests").hover(
+    function() {
+        $("#Clean").removeClass('highlight');
+        $("#Test").removeClass('highlight');
+        $("#Restore").removeClass('highlight');
+        $("#Compile").removeClass('highlight');
+        $("#UnitTests").removeClass('highlight');
+        $("#FunctionalTests").removeClass('highlight');
+        $("#StartApi").removeClass('highlight');
+        $("#StopApi").removeClass('highlight');
+        $("#RunTests").removeClass('highlight');
+        $("#Test").addClass('highlight');
+        $("#Clean").addClass('highlight');
+        $("#Restore").addClass('highlight');
+        $("#Compile").addClass('highlight');
+        $("#UnitTests").addClass('highlight');
+    },
+    function() {
+        $("#Test").removeClass('highlight');
+        $("#Clean").removeClass('highlight');
+        $("#Restore").removeClass('highlight');
+        $("#Compile").removeClass('highlight');
+        $("#UnitTests").removeClass('highlight');
+        $("#Test").addClass('highlight');
+        $("#Clean").addClass('highlight');
+        $("#Restore").addClass('highlight');
+        $("#Compile").addClass('highlight');
+    });
+  $("#FunctionalTests").hover(
+    function() {
+        $("#Clean").removeClass('highlight');
+        $("#Test").removeClass('highlight');
+        $("#Restore").removeClass('highlight');
+        $("#Compile").removeClass('highlight');
+        $("#UnitTests").removeClass('highlight');
+        $("#FunctionalTests").removeClass('highlight');
+        $("#StartApi").removeClass('highlight');
+        $("#StopApi").removeClass('highlight');
+        $("#RunTests").removeClass('highlight');
+        $("#StartApi").addClass('highlight');
+        $("#Test").addClass('highlight');
+        $("#Clean").addClass('highlight');
+        $("#Restore").addClass('highlight');
+        $("#Compile").addClass('highlight');
+        $("#FunctionalTests").addClass('highlight');
+        $("#StopApi").addClass('highlight');
+    },
+    function() {
+        $("#StartApi").removeClass('highlight');
+        $("#Test").removeClass('highlight');
+        $("#Clean").removeClass('highlight');
+        $("#Restore").removeClass('highlight');
+        $("#Compile").removeClass('highlight');
+        $("#FunctionalTests").removeClass('highlight');
+        $("#StopApi").removeClass('highlight');
+        $("#Test").addClass('highlight');
+        $("#Clean").addClass('highlight');
+        $("#Restore").addClass('highlight');
+        $("#Compile").addClass('highlight');
+    });
+  $("#StartApi").hover(
+    function() {
+        $("#Clean").removeClass('highlight');
+        $("#Test").removeClass('highlight');
+        $("#Restore").removeClass('highlight');
+        $("#Compile").removeClass('highlight');
+        $("#UnitTests").removeClass('highlight');
+        $("#FunctionalTests").removeClass('highlight');
+        $("#StartApi").removeClass('highlight');
+        $("#StopApi").removeClass('highlight');
+        $("#RunTests").removeClass('highlight');
+        $("#StartApi").addClass('highlight');
+    },
+    function() {
+        $("#StartApi").removeClass('highlight');
+        $("#Test").addClass('highlight');
+        $("#Clean").addClass('highlight');
+        $("#Restore").addClass('highlight');
+        $("#Compile").addClass('highlight');
+    });
+  $("#StopApi").hover(
+    function() {
+        $("#Clean").removeClass('highlight');
+        $("#Test").removeClass('highlight');
+        $("#Restore").removeClass('highlight');
+        $("#Compile").removeClass('highlight');
+        $("#UnitTests").removeClass('highlight');
+        $("#FunctionalTests").removeClass('highlight');
+        $("#StartApi").removeClass('highlight');
+        $("#StopApi").removeClass('highlight');
+        $("#RunTests").removeClass('highlight');
+        $("#StopApi").addClass('highlight');
+    },
+    function() {
+        $("#StopApi").removeClass('highlight');
+        $("#Test").addClass('highlight');
+        $("#Clean").addClass('highlight');
+        $("#Restore").addClass('highlight');
+        $("#Compile").addClass('highlight');
+    });
+  $("#RunTests").hover(
+    function() {
+        $("#Clean").removeClass('highlight');
+        $("#Test").removeClass('highlight');
+        $("#Restore").removeClass('highlight');
+        $("#Compile").removeClass('highlight');
+        $("#UnitTests").removeClass('highlight');
+        $("#FunctionalTests").removeClass('highlight');
+        $("#StartApi").removeClass('highlight');
+        $("#StopApi").removeClass('highlight');
+        $("#RunTests").removeClass('highlight');
+        $("#StartApi").addClass('highlight');
+        $("#Test").addClass('highlight');
+        $("#Clean").addClass('highlight');
+        $("#Restore").addClass('highlight');
+        $("#Compile").addClass('highlight');
+        $("#FunctionalTests").addClass('highlight');
+        $("#UnitTests").addClass('highlight');
+        $("#RunTests").addClass('highlight');
+        $("#StopApi").addClass('highlight');
+    },
+    function() {
+        $("#StartApi").removeClass('highlight');
+        $("#Test").removeClass('highlight');
+        $("#Clean").removeClass('highlight');
+        $("#Restore").removeClass('highlight');
+        $("#Compile").removeClass('highlight');
+        $("#FunctionalTests").removeClass('highlight');
+        $("#UnitTests").removeClass('highlight');
+        $("#RunTests").removeClass('highlight');
+        $("#StopApi").removeClass('highlight');
         $("#Test").addClass('highlight');
         $("#Clean").addClass('highlight');
         $("#Restore").addClass('highlight');
@@ -318,7 +474,14 @@ Clean -.-> Restore
 Clean --> Compile
 Test --> Restore
 Restore --> Compile
-Compile
+Compile --> UnitTests
+Compile --> FunctionalTests
+UnitTests --> RunTests
+FunctionalTests ==> StopApi
+FunctionalTests --> RunTests
+StartApi --> FunctionalTests
+StopApi
+RunTests
 
 
 linkStyle default interpolate basis
