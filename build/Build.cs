@@ -3,11 +3,13 @@ using System.Linq;
 using Nuke.Common;
 using Nuke.Common.CI;
 using Nuke.Common.Execution;
+using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.Git;
+using Nuke.Common.Tools.GitHub;
 using Nuke.Common.Tools.MSBuild;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.EnvironmentInfo;
@@ -28,16 +30,32 @@ class Build : NukeBuild
 
     [Solution] readonly Solution Solution;
 
+    [GitRepository] readonly GitRepository Repository;
+    
 
     Target Clean => _ => _
+        .Requires(() => Repository.IsOnMainOrMasterBranch())
         .Before(Restore)
         .DependentFor(Compile)
         .Executes(() =>
         {
+            Serilog.Log.Information("Commit = {Value}", Repository.Commit);
+            Serilog.Log.Information("Branch = {Value}", Repository.Branch);
+            Serilog.Log.Information("Tags = {Value}", Repository.Tags);
+            Serilog.Log.Information("main branch = {Value}", Repository.IsOnMainBranch());
+            Serilog.Log.Information("main/master branch = {Value}", Repository.IsOnMainOrMasterBranch());
+            Serilog.Log.Information("release/* branch = {Value}", Repository.IsOnReleaseBranch());
+            Serilog.Log.Information("hotfix/* branch = {Value}", Repository.IsOnHotfixBranch());
+            Serilog.Log.Information("Https URL = {Value}", Repository.HttpsUrl);
+            Serilog.Log.Information("SSH URL = {Value}", Repository.SshUrl);
+
+            Repository.GetLatestRelease();
+            
+
         });
 
 
-    Target Test => _ => _
+    Target GitRepo => _ => _
         .Before(Restore)
         .Executes(() =>
         {
@@ -45,7 +63,7 @@ class Build : NukeBuild
         });
 
     Target Restore => _ => _
-        .DependsOn(Test)
+        .DependsOn(GitRepo)
         .Executes(() =>
         {
             DotNetTasks.DotNetRestore(_ => _

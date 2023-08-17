@@ -75,11 +75,11 @@
               "Clean",
               "Compile",
               "FunctionalTests",
+              "GitRepo",
               "Restore",
               "RunTests",
               "StartApi",
               "StopApi",
-              "Test",
               "UnitTests"
             ]
           }
@@ -97,11 +97,11 @@
               "Clean",
               "Compile",
               "FunctionalTests",
+              "GitRepo",
               "Restore",
               "RunTests",
               "StartApi",
               "StopApi",
-              "Test",
               "UnitTests"
             ]
           }
