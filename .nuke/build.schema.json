@@ -6,6 +6,9 @@
     "build": {
       "type": "object",
       "properties": {
+        "ApiKey": {
+          "type": "string"
+        },
         "Configuration": {
           "type": "string",
           "description": "Configuration to build - Default is 'Debug' (local) or 'Release' (server)",
@@ -77,6 +80,7 @@
               "FunctionalTests",
               "GitRepo",
               "Pack",
+              "Publish",
               "Restore",
               "RunTests",
               "StartApi",
@@ -100,6 +104,7 @@
               "FunctionalTests",
               "GitRepo",
               "Pack",
+              "Publish",
               "Restore",
               "RunTests",
               "StartApi",

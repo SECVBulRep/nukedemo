@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Nuke.Common;
 using Nuke.Common.CI;
@@ -24,7 +25,7 @@ class Build : NukeBuild
     ///   - JetBrains Rider            https://nuke.build/rider
     ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
     ///   - Microsoft VSCode           https://nuke.build/vscode
-    public static int Main() => Execute<Build>(x => x.Pack);
+    public static int Main() => Execute<Build>(x => x.Publish);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
@@ -32,11 +33,6 @@ class Build : NukeBuild
     [Solution] readonly Solution Solution;
 
     [GitRepository] readonly GitRepository Repository;
-
-    AbsolutePath PackageAbsolutePath => RootDirectory / "packages";
-
-   
-    
     
     Target Clean => _ => _
         .Requires(() => Repository.IsOnMainOrMasterBranch())
@@ -44,6 +40,7 @@ class Build : NukeBuild
         .DependentFor(Compile)
         .Executes(() =>
         {
+            
             Serilog.Log.Information("Commit = {Value}", Repository.Commit);
             Serilog.Log.Information("Branch = {Value}", Repository.Branch);
             Serilog.Log.Information("Tags = {Value}", Repository.Tags);
@@ -126,6 +123,8 @@ class Build : NukeBuild
 
     [GitVersion(Framework = "net6.0")] readonly GitVersion GitVersion;
     
+    AbsolutePath PackageAbsolutePath => RootDirectory / "packages";
+    
     Target Pack => _ => _
         .DependsOn(StopApi,RunTests)
         .Executes(() =>
@@ -136,4 +135,23 @@ class Build : NukeBuild
                     .SetVersion(GitVersion.NuGetVersionV2)
             );
         });
+
+    IEnumerable<AbsolutePath> Packages => PackageAbsolutePath.GlobFiles("*/*.nupkg");
+
+    [Parameter] string ApiKey;
+
+    Target Publish => _ => _
+        .Requires(()=>ApiKey)
+        .DependsOn(Pack)
+        .Executes(() =>
+        {
+            DotNetTasks.DotNetNuGetPush(p =>
+                p.SetSource("https://www.myget.org/F/secvbulrep/api/v2/package")
+                    .SetApiKey(ApiKey)
+                    .CombineWith(Packages,(_,v)=> _
+                        .SetTargetPath(v))
+            );
+        });
+    
+
 }
