@@ -10,6 +10,7 @@ using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.Git;
 using Nuke.Common.Tools.GitHub;
+using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.MSBuild;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.EnvironmentInfo;
@@ -23,7 +24,7 @@ class Build : NukeBuild
     ///   - JetBrains Rider            https://nuke.build/rider
     ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
     ///   - Microsoft VSCode           https://nuke.build/vscode
-    public static int Main() => Execute<Build>(x => x.Compile);
+    public static int Main() => Execute<Build>(x => x.Pack);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
@@ -31,8 +32,12 @@ class Build : NukeBuild
     [Solution] readonly Solution Solution;
 
     [GitRepository] readonly GitRepository Repository;
-    
 
+    AbsolutePath PackageAbsolutePath => RootDirectory / "packages";
+
+   
+    
+    
     Target Clean => _ => _
         .Requires(() => Repository.IsOnMainOrMasterBranch())
         .Before(Restore)
@@ -50,8 +55,6 @@ class Build : NukeBuild
             Serilog.Log.Information("SSH URL = {Value}", Repository.SshUrl);
 
             Repository.GetLatestRelease();
-            
-
         });
 
 
@@ -102,6 +105,7 @@ class Build : NukeBuild
         });
 
     IProcess ApiProcess;
+
     Target StartApi => _ => _
         .Executes(() =>
         {
@@ -113,10 +117,23 @@ class Build : NukeBuild
         {
             ApiProcess.Kill();
         });
-    
+
     Target RunTests => _ => _
         .DependsOn(UnitTests, FunctionalTests)
         .Executes(() =>
         {
+        });
+
+    [GitVersion(Framework = "net6.0")] readonly GitVersion GitVersion;
+    
+    Target Pack => _ => _
+        .DependsOn(StopApi,RunTests)
+        .Executes(() =>
+        {
+            DotNetTasks.DotNetPack(p =>
+                p.SetProject(RootDirectory / "Nuke.WebApplication")
+                    .SetOutputDirectory(PackageAbsolutePath / "Nuke.WebApplication")
+                    .SetVersion(GitVersion.NuGetVersionV2)
+            );
         });
 }
