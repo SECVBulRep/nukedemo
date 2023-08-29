@@ -81,9 +81,11 @@
               "GitRepo",
               "Pack",
               "Publish",
+              "RemoveExistingContainer",
               "Restore",
               "RunTests",
               "StartApi",
+              "StartPostgres",
               "StopApi",
               "UnitTests"
             ]
@@ -105,9 +107,11 @@
               "GitRepo",
               "Pack",
               "Publish",
+              "RemoveExistingContainer",
               "Restore",
               "RunTests",
               "StartApi",
+              "StartPostgres",
               "StopApi",
               "UnitTests"
             ]

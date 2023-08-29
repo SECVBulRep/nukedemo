@@ -8,6 +8,7 @@ using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
+using Nuke.Common.Tools.Docker;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.Git;
 using Nuke.Common.Tools.GitHub;
@@ -30,7 +31,8 @@ class Build : NukeBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-    [Solution] readonly Solution Solution;
+    
+    [Solution(GenerateProjects = true)] readonly Solution Solution;
 
     [GitRepository] readonly GitRepository Repository;
     
@@ -84,6 +86,8 @@ class Build : NukeBuild
         .DependsOn(Compile)
         .Executes(() =>
         {
+            
+            
             DotNetTasks.DotNetTest(s =>
                 s.SetProjectFile(RootDirectory / "Nuke.UnitTests")
                     .EnableNoRestore()
@@ -95,8 +99,10 @@ class Build : NukeBuild
         .Triggers(StopApi)
         .Executes(() =>
         {
+            
+            
             DotNetTasks.DotNetTest(s =>
-                s.SetProjectFile(RootDirectory / "Nuke.FunctionalTests")
+                s.SetProjectFile(Solution.Nuke_FunctionalTests)
                     .EnableNoRestore()
                     .EnableNoBuild());
         });
@@ -153,5 +159,30 @@ class Build : NukeBuild
             );
         });
     
+   
+    
+    Target RemoveExistingContainer => _ => _
+        .Executes(() =>
+        {
+            IReadOnlyCollection<string> containers = new[] { "my-postgres-container" };
+            
+            DockerTasks.DockerRm(s => s
+                .SetContainers(containers)
+                .SetForce(true)
+            );
+        });
+
+    Target StartPostgres => _ => _
+        .DependsOn(RemoveExistingContainer) // Сначала удаляем существующий контейнер
+        .Executes(() =>
+        {
+            DockerTasks.DockerRun(s => s
+                .SetImage("postgres")
+                .SetEnv("POSTGRES_PASSWORD=mysecretpassword")
+                //.SetPort("5432:5432")
+                .SetName("my-postgres-container")
+                .SetDetach(true)
+            );
+        });
 
 }
